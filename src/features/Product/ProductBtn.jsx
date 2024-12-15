@@ -1,34 +1,54 @@
-import { GoPlus } from "react-icons/go";
-import { FiMinus } from "react-icons/fi";
+import { Box, Button, IconButton, Typography } from "@mui/material";
+import { AddRounded, RemoveRounded } from "@mui/icons-material";
 export const AddToCartBtn = ({ onClick }) => {
     return (
-        <button
-            className="rounded-xl bg-btn-100 px-8 py-4 text-3xl text-font-100 shadow-[2px_2px_2px] shadow-black/20 transition-all hover:translate-y-1"
+        <Button
+            sx={{
+                color: "font.main",
+                backgroundColor: "button.main",
+                padding: "0.26rem 3rem",
+                transition: "all 0.2s",
+                boxShadow: "1px 2px 2px rgba(0,0,0,0.3)",
+                "&:hover": {
+                    transform: "translateY(2px)",
+                    boxShadow: "none",
+                },
+            }}
             onClick={onClick}
         >
-            加入購物車
-        </button>
+            <Typography sx={{ fontSize: "2.2rem" }}>加入購物車</Typography>
+        </Button>
     );
 };
 
 export const InDecreaseBTN = ({ quantity, handleIncrease, handleDecrease }) => {
     return (
-        <div className="flex items-center justify-between gap-10 text-4xl">
-            <button
-                className="rounded-full bg-btn-100 p-4 shadow-[1px_1px_1px] shadow-black/20"
+        <Box
+            sx={{ display: "flex", alignItems: "center", columnGap: "1.5rem" }}
+        >
+            <IconButton
+                sx={{
+                    color: "font.main",
+                    backgroundColor: "button.main",
+                    "&:hover": { backgroundColor: "button.secondary" },
+                }}
                 onClick={handleIncrease}
             >
-                <GoPlus className="aspect-square text-font-100" />
-            </button>
-
-            <p>{quantity}</p>
-
-            <button
-                className="rounded-full bg-btn-100 p-4 shadow-[1px_1px_1px] shadow-black/20"
+                <AddRounded fontSize="large" />
+            </IconButton>
+            <Typography variant="h4" component={"p"}>
+                {quantity}
+            </Typography>
+            <IconButton
+                sx={{
+                    color: "font.main",
+                    backgroundColor: "button.main",
+                    "&:hover": { backgroundColor: "button.secondary" },
+                }}
                 onClick={handleDecrease}
             >
-                <FiMinus className="aspect-square text-font-100" />
-            </button>
-        </div>
+                <RemoveRounded fontSize="large" />
+            </IconButton>
+        </Box>
     );
 };

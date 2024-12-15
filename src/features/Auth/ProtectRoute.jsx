@@ -1,12 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../SupabaseAPI";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { resetUserData, saveUserData } from "./userSlice";
 
 const ProtectRoute = ({ children }) => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -24,14 +21,11 @@ const ProtectRoute = ({ children }) => {
 
         const {
             data: { subscription },
-        } = supabase.auth.onAuthStateChange((event, session) => {
-            if (event === "SIGNED_OUT") dispatch(resetUserData());
-            else if (session) dispatch(saveUserData(session));
-        });
+        } = supabase.auth.onAuthStateChange();
         return () => {
             subscription.unsubscribe();
         };
-    }, [navigate, dispatch]);
+    }, [navigate]);
 
     if (isLoading) return <div>Loading...</div>;
 

@@ -5,15 +5,14 @@ export const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const signUpAPI = async ({ formData }) => {
-    const { registerEmail, registerPassword, registerPhone, registerName } =
-        formData;
+    const { email, password, phone, name } = formData;
     let { data, error } = await supabase.auth.signUp({
-        email: registerEmail,
-        password: registerPassword,
+        email,
+        password,
         options: {
             data: {
-                phone: registerPhone,
-                name: registerName,
+                phone,
+                name,
             },
         },
     });
@@ -21,15 +20,15 @@ export const signUpAPI = async ({ formData }) => {
 };
 
 export const signInAPI = async ({ formData }) => {
-    const { loginEmail, loginPassword } = formData;
+    const { email, password } = formData;
     const { data, error } = await supabase.auth.signInWithPassword({
-        email: loginEmail,
-        password: loginPassword,
+        email,
+        password,
     });
 
     if (error) {
         console.error("登入發生錯誤");
-        throw new Error();
+        throw error;
     }
 
     return { data, error };

@@ -37,6 +37,11 @@ const Product = () => {
         }
     }, [isSuccess, isLoading, page, queryClient, hasNextPage, category]);
 
+    useEffect(() => {
+        // 當組件加載後滾動到頁面頂部
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <div className="col-start-2 col-end-9 grid min-h-[78rem] grid-cols-subgrid grid-rows-[6rem_1fr] gap-16 py-32">
             <SortBtns />

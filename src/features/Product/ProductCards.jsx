@@ -1,26 +1,34 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AddToCartBtn, InDecreaseBTN } from "./ProductBtn";
 import { decrease, increase, pushToCart } from "../Cart/cartSlice";
+import {
+    Box,
+    Card,
+    CardContent,
+    CardMedia,
+    Grid2,
+    Typography,
+} from "@mui/material";
 
 const ProductCards = ({ commodities }) => {
     return (
-        <div className="col-start-2 col-end-7 grid grid-cols-[repeat(auto-fit,minmax(25rem,auto))] gap-x-10 gap-y-20">
-            {commodities &&
-                commodities.map((commodity, i) => {
-                    // 最後一個不顯示
-                    if (i === 6) return;
-                    return (
-                        <ProductCard
-                            key={`product_${commodity.name}`}
-                            // imgURL={productData.imgURL}
-                            // productName={productData.productName}
-                            // price={productData.price}
-                            // id={productData.id}
-                            product={commodity}
-                        />
-                    );
-                })}
-        </div>
+        <Grid2
+            sx={{
+                display: "grid",
+                gridColumn: "2/7",
+                columnGap: "2rem",
+                rowGap: "3rem",
+                justifyContent: "start",
+                gridTemplateColumns: "repeat(auto-fit,25.5rem)",
+            }}
+        >
+            {commodities?.slice(0, 6).map((commodity) => (
+                <ProductCard
+                    key={`product_${commodity.name}`}
+                    product={commodity}
+                />
+            ))}
+        </Grid2>
     );
 };
 
@@ -46,25 +54,60 @@ const ProductCard = ({ product }) => {
     };
 
     return (
-        <div className="flex flex-col items-center gap-6 self-start justify-self-start rounded-2xl bg-card-100 p-6 shadow-[2px_2px_2px] shadow-black/20 transition-all hover:bg-card-200">
-            <div className="aspect-square h-[22rem] overflow-hidden rounded-2xl">
-                <img
-                    src={`https://zrlmurvbeqkkbdtykccu.supabase.co/storage/v1/object/public/BreadImg${imgURL}`}
-                    className="h-full w-full object-cover"
+        <Card
+            sx={{
+                backgroundColor: "card.main",
+                alignSelf: "start",
+                justifySelf: "start",
+                "& .MuiCardContent-root": {
+                    paddingBottom: "1.6rem",
+                },
+            }}
+        >
+            <Box
+                sx={{
+                    padding: "1.6rem",
+                    height: "25.4rem",
+                    aspectRatio: "1/1",
+                }}
+            >
+                <CardMedia
+                    component={"img"}
+                    image={`https://zrlmurvbeqkkbdtykccu.supabase.co/storage/v1/object/public/BreadImg${imgURL}`}
+                    alt={name}
+                    sx={{
+                        height: "100%",
+                        width: "100%",
+                        objectFit: "cover",
+
+                        borderRadius: "0.6rem",
+                    }}
                 />
-            </div>
-            <p className="text-4xl text-bg_brown-400">{name}</p>
-            <p className="text-2xl text-font-100">NT${price}</p>
-            {cartProduct ? (
-                <InDecreaseBTN
-                    quantity={cartProduct.quantity}
-                    handleIncrease={handleIncrease}
-                    handleDecrease={handleDecrease}
-                />
-            ) : (
-                <AddToCartBtn onClick={HandleAddToCart} />
-            )}
-        </div>
+            </Box>
+            <CardContent
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    padding: "0.6rem",
+                    paddingTop: "0",
+                }}
+            >
+                <Typography variant="h4">{name}</Typography>
+                <Typography variant="h4" sx={{ marginBottom: "1rem" }}>
+                    NT$ {price}
+                </Typography>
+                {cartProduct ? (
+                    <InDecreaseBTN
+                        quantity={cartProduct.quantity}
+                        handleIncrease={handleIncrease}
+                        handleDecrease={handleDecrease}
+                    />
+                ) : (
+                    <AddToCartBtn onClick={HandleAddToCart} />
+                )}
+            </CardContent>
+        </Card>
     );
 };
 

@@ -1,3 +1,5 @@
+import { Box, Card, CardMedia, Grid2, Typography } from "@mui/material";
+
 const FeatureProductArr = [
     {
         productName: "馬卡龍",
@@ -23,32 +25,77 @@ const FeatureProductArr = [
 
 const FeatureProducts = () => {
     return (
-        <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(24rem,1fr))] gap-14">
+        <Grid2
+            sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit,28rem)",
+                columnGap: "2rem",
+                width: "100%",
+            }}
+        >
             {FeatureProductArr.map((product) => {
                 return (
-                    <div key={product.productName}>
+                    <Box
+                        key={product.productName}
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                        }}
+                    >
                         <FeatureProduct product={product} />
-                    </div>
+                    </Box>
                 );
             })}
-        </div>
+        </Grid2>
     );
 };
 
 const FeatureProduct = ({ product }) => {
     return (
-        <div className="flex flex-col items-center gap-5">
-            <div className="relative aspect-square w-96 overflow-hidden rounded-xl shadow-[3px_3px_5px] shadow-black/20">
-                <img
-                    src={product.image}
-                    className="absolute block h-full w-full object-cover object-[60%_70%] transition-all hover:scale-110 hover:transition-transform"
+        <>
+            <Card
+                sx={{
+                    aspectRatio: "1/1",
+                    position: "relative",
+                    boxShadow: 3,
+                    minWidth: "26rem",
+                }}
+            >
+                <CardMedia
+                    component={"img"}
+                    image={product.image}
+                    alt={product.productName}
+                    sx={{
+                        objectFit: "cover",
+                        position: "absolute",
+                        width: "100%",
+                        height: "100%",
+                        transition: "transform 0.3s",
+                        "&:hover": {
+                            transform: "scale(1.1)",
+                        },
+                    }}
                 />
-            </div>
-            <p className="cursor-pointer text-4xl hover:underline">
+            </Card>
+
+            <Typography
+                variant="h4"
+                sx={{
+                    display: "inline-block",
+                    marginTop: "1rem",
+                }}
+            >
                 {product.productName}
-            </p>
-            <p className="text-3xl text-bg_brown-300">NT$50</p>
-        </div>
+            </Typography>
+            <Typography
+                variant="h5"
+                component={"p"}
+                sx={{ color: "font.dark" }}
+            >
+                NT$ {product.price}
+            </Typography>
+        </>
     );
 };
 

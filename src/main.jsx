@@ -7,6 +7,8 @@ import { Provider } from "react-redux";
 import { store } from "./store.js";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme.js";
 
 const queryClient = new QueryClient();
 
@@ -16,7 +18,9 @@ createRoot(document.getElementById("root")).render(
         <Provider store={store}>
             <QueryClientProvider client={queryClient}>
                 <ReactQueryDevtools initialIsOpen={false} />
-                <App />
+                <ThemeProvider theme={theme}>
+                    <App />
+                </ThemeProvider>
             </QueryClientProvider>
         </Provider>
     </BrowserRouter>,

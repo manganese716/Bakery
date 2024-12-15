@@ -1,6 +1,6 @@
 const Gallery = () => {
     return (
-        <div className="col-start-2 col-end-9 grid grid-cols-6 grid-rows-[repeat(5,10vw)] gap-[0.9vw] py-32">
+        <div className="col-start-1 col-end-9 grid grid-cols-6 grid-rows-[repeat(5,10vw)] gap-[0.9vw]">
             <div className="col-start-1 col-end-3 row-start-1 row-end-3 overflow-hidden">
                 <img
                     src="/img/gallery-1.jpg"

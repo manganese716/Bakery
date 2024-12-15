@@ -1,3 +1,4 @@
+import { Button, ButtonGroup } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 
 const sortArr = [
@@ -9,33 +10,52 @@ const sortArr = [
 
 const SortBtns = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const sortParams = searchParams.get("sort") || "all";
+    const currentSort = searchParams.get("sort") || "all";
+
+    const handleSortChange = (params) => {
+        setSearchParams((prev) => {
+            prev.set("sort", params);
+            prev.set("page", 1);
+            return prev;
+        });
+    };
 
     return (
-        <div className="col-start-2 col-end-7 grid grid-cols-4 gap-4 self-start">
+        <ButtonGroup
+            sx={{
+                gridColumn: "2/7",
+                display: "grid",
+                gridTemplateColumns: "repeat(4,1fr)",
+                justifyContent: "center",
+                columnGap: "2rem",
+                "& .MuiButton-root": {
+                    border: "none",
+                },
+            }}
+        >
             {sortArr.map((sort) => {
-                const bg_color =
-                    sort.params === sortParams
-                        ? "bg-bg_brown-300"
-                        : "bg-bg_brown-100";
-
                 return (
-                    <button
+                    <Button
                         key={`sort_${sort.text}`}
-                        className={`cursor-pointer py-5 text-center text-4xl text-font-100 hover:bg-bg_brown-300 ${bg_color}`}
-                        onClick={() => {
-                            setSearchParams((prev) => {
-                                prev.set("sort", sort.params);
-                                prev.set("page", 1);
-                                return prev;
-                            });
+                        sx={{
+                            color: "font.main",
+                            backgroundColor:
+                                sort.params === currentSort
+                                    ? "primary.dark"
+                                    : "primary.main",
+                            fontSize: "2.5rem",
+                            padding: "0",
+                            "&:hover": {
+                                backgroundColor: "primary.dark",
+                            },
                         }}
+                        onClick={() => handleSortChange(sort.params)}
                     >
                         {sort.text}
-                    </button>
+                    </Button>
                 );
             })}
-        </div>
+        </ButtonGroup>
     );
 };
 

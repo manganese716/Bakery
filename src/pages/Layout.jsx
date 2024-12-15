@@ -3,19 +3,43 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useState } from "react";
 import SideBar from "../components/SideBar";
+import { Grid2 } from "@mui/material";
 
 const Layout = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
+
     return (
         <>
-            <div className="grid grid-cols-[minmax(3rem,1fr)_repeat(7,minmax(auto,17rem))_minmax(3rem,1fr)] grid-rows-[minmax(calc(100vh-6rem),1fr)_auto]">
+            <Grid2
+                container
+                columns={9}
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns:
+                        "minmax(3rem,1fr) repeat(7,minmax(auto,17rem)) minmax(3rem,1fr)",
+                    gridTemplateRows: "minmax(calc(100vh-6rem),1fr) auto",
+                }}
+            >
                 <Header onOpen={() => setSidebarOpen(true)} />
-                <div className="col-span-full grid grid-cols-subgrid bg-background_textrue bg-repeat pt-24">
-                    <Outlet />
-                </div>
-                <Footer />
-            </div>
 
+                <Grid2
+                    item="true"
+                    container
+                    sx={{
+                        display: "grid",
+                        gridColumn: "1/-1",
+                        gridTemplateColumns: "subgrid",
+                        backgroundImage: "url('/img/Bg.png')",
+                        backgroundRepeat: "repeat",
+                        pt: 8,
+                        minHeight: "93.1vh",
+                    }}
+                >
+                    <Outlet />
+                </Grid2>
+
+                <Footer />
+            </Grid2>
             <SideBar
                 isOpen={isSidebarOpen}
                 onClose={() => setSidebarOpen(false)}
