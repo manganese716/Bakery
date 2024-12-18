@@ -1,9 +1,10 @@
 import { useDispatch } from "react-redux";
 import { RxCross2 } from "react-icons/rx";
-import { remove, setQuantity } from "../Cart/cartSlice";
+import { remove } from "../Cart/cartSlice";
+import { Box, IconButton, Typography } from "@mui/material";
 
 const CartPreviews = ({ cartItems }) => {
-    if (cartItems.length < 1)
+    if (cartItems?.length < 1)
         return (
             <div className="flex justify-center py-24 text-4xl text-bg_brown-300">
                 購物車是空的
@@ -30,39 +31,62 @@ const CartPreview = ({ cartItem }) => {
     const dispatch = useDispatch();
 
     return (
-        <div className="relative grid grid-cols-[12rem_1fr] grid-rows-2 gap-x-8 border-b border-bg_brown-400/30 py-8 text-4xl last:border-none">
-            <RxCross2
-                className="absolute right-8 top-8 cursor-pointer"
+        <Box
+            sx={{
+                position: "relative",
+                display: "flex",
+                borderBottom: "1px solid",
+                borderColor: "rgba(156, 121, 91, 0.3)",
+                py: 2,
+                columnGap: "1rem",
+                fontSize: "1.5rem",
+                "&:last-child": {
+                    border: "none",
+                },
+            }}
+        >
+            <IconButton
+                sx={{ position: "absolute", top: 16, right: 16 }}
                 onClick={() => dispatch(remove(id))}
-            />
-            <div
-                key={`cartPreview--${id}`}
-                className="row-span-full aspect-square overflow-hidden rounded-xl"
             >
-                <img
+                <RxCross2 />
+            </IconButton>
+
+            <Box
+                sx={{
+                    gridRow: "1 / span 2",
+                    width: "12rem",
+                    aspectRatio: "1", // 等同於 aspect-square
+                    overflow: "hidden",
+                    borderRadius: "12px",
+                }}
+            >
+                <Box
+                    component="img"
                     src={`https://zrlmurvbeqkkbdtykccu.supabase.co/storage/v1/object/public/BreadImg${imgURL}`}
-                    className="h-full w-full object-cover"
-                ></img>
-            </div>
-            <div className="flex items-center">{productName}</div>
-            <div className="flex gap-4 whitespace-nowrap">
-                <p>NT${price} X </p>
-                <input
-                    type="number"
-                    onBlur={(e) => {
-                        let value = Number(e.target.value);
-                        console.log(value);
-                        if (isNaN(value)) value = quantity;
-                        else if (value > 20) value = 20;
-                        else if (value < 1) value = 1;
-                        e.target.value = value;
-                        dispatch(setQuantity({ id: id, quantity: value }));
+                    sx={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
                     }}
-                    defaultValue={quantity}
-                    className="h-12 w-28 rounded-xl border border-bg_brown-400 bg-font-200 py-3 text-center focus:outline-none"
                 />
-            </div>
-        </div>
+            </Box>
+
+            <Box
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    rowGap: "2rem",
+                }}
+            >
+                <Typography variant="div" sx={{ fontSize: "2rem" }}>
+                    {productName}
+                </Typography>
+                <Typography variant="div" sx={{ fontSize: "1.8rem" }}>
+                    {quantity} X NT${price}
+                </Typography>
+            </Box>
+        </Box>
     );
 };
 

@@ -12,27 +12,29 @@ const Layout = () => {
         <>
             <Grid2
                 container
+                aria-label="Layout Grid"
                 columns={9}
                 sx={{
                     display: "grid",
-                    gridTemplateColumns:
-                        "minmax(3rem,1fr) repeat(7,minmax(auto,17rem)) minmax(3rem,1fr)",
-                    gridTemplateRows: "minmax(calc(100vh-6rem),1fr) auto",
+                    gridTemplateColumns: {
+                        sm: "minmax(4rem,1fr) repeat(7,minmax(auto,17rem)) minmax(4rem,1fr)",
+                        xs: "minmax(1rem,1fr) repeat(7,minmax(auto,17rem)) minmax(1rem,1fr)",
+                    },
                 }}
             >
-                <Header onOpen={() => setSidebarOpen(true)} />
+                <Header openCart={() => setSidebarOpen(true)} />
 
                 <Grid2
                     item="true"
                     container
+                    aria-label="Content Layout"
                     sx={{
                         display: "grid",
                         gridColumn: "1/-1",
                         gridTemplateColumns: "subgrid",
                         backgroundImage: "url('/img/Bg.png')",
                         backgroundRepeat: "repeat",
-                        pt: 8,
-                        minHeight: "93.1vh",
+                        minHeight: "calc(100vh - 6rem)",
                     }}
                 >
                     <Outlet />

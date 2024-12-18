@@ -28,8 +28,11 @@ const FeatureProducts = () => {
         <Grid2
             sx={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit,28rem)",
-                columnGap: "2rem",
+                gridTemplateColumns: {
+                    sm: "repeat(4,1fr)",
+                    xs: "repeat(2,1fr)",
+                },
+                gap: "2rem",
                 width: "100%",
             }}
         >
@@ -59,7 +62,7 @@ const FeatureProduct = ({ product }) => {
                     aspectRatio: "1/1",
                     position: "relative",
                     boxShadow: 3,
-                    minWidth: "26rem",
+                    width: "100%",
                 }}
             >
                 <CardMedia

@@ -23,11 +23,13 @@ const SortBtns = () => {
     return (
         <ButtonGroup
             sx={{
-                gridColumn: "2/7",
+                gridColumn: { md: "2/7", xs: "1/-1" },
                 display: "grid",
                 gridTemplateColumns: "repeat(4,1fr)",
                 justifyContent: "center",
-                columnGap: "2rem",
+                columnGap: { sm: "2rem", xs: "1rem" },
+                marginTop: "4rem",
+                alignSelf: "start",
                 "& .MuiButton-root": {
                     border: "none",
                 },

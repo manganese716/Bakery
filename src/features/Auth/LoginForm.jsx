@@ -3,9 +3,9 @@ import { signInAPI } from "../../SupabaseAPI";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { Alert, alpha, Box, Button, Snackbar } from "@mui/material";
-import { BeatLoader } from "react-spinners";
-import ReactFormInput from "./ReactFormInput";
+import { Alert, Box, Snackbar } from "@mui/material";
+import ReactFormInput from "../../components/ReactFormInput";
+import ReactFormButton from "../../components/ReactFormButton";
 
 const LoginForm = () => {
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ const LoginForm = () => {
     const { mutate, isPending } = useMutation({
         mutationFn: (formData) => signInAPI({ formData }),
         onSuccess: () => {
-            navigate(-1);
+            navigate("/profile");
         },
         onError: (error) => {
             console.log(error.code);
@@ -70,35 +70,11 @@ const LoginForm = () => {
             />
 
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <Button
-                    variant="contained"
-                    disabled={!isValid || isPending}
-                    type="submit"
-                    onClick={(e) => {
-                        e.preventDefault;
-                    }}
-                    sx={{
-                        fontSize: "2rem",
-                        backgroundColor: "button.main",
-                        padding: "0 5rem",
-                        "&:hover": {
-                            backgroundColor: "button.secondary",
-                        },
-                        "&.Mui-disabled": {
-                            backgroundColor: (theme) =>
-                                alpha(theme.palette.button.main, 0.5),
-                            color: "white",
-                        },
-                    }}
-                >
-                    {isPending ? (
-                        <Box>
-                            <BeatLoader color="#F5E5C0" />
-                        </Box>
-                    ) : (
-                        "登入"
-                    )}
-                </Button>
+                <ReactFormButton
+                    isValid={isValid}
+                    isPending={isPending}
+                    text="登入"
+                />
             </Box>
 
             <Snackbar

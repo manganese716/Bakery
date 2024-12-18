@@ -6,8 +6,9 @@ export const AddToCartBtn = ({ onClick }) => {
             sx={{
                 color: "font.main",
                 backgroundColor: "button.main",
-                padding: "0.26rem 3rem",
+                padding: { sm: "0.26rem 2rem", xs: "0.26rem 1rem" },
                 transition: "all 0.2s",
+                whiteSpace: "nowrap",
                 boxShadow: "1px 2px 2px rgba(0,0,0,0.3)",
                 "&:hover": {
                     transform: "translateY(2px)",

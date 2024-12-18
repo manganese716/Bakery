@@ -1,40 +1,83 @@
+import { Box, Typography, useTheme } from "@mui/material";
 import { useParams } from "react-router-dom";
+
+const ProgressStep = ({ stepLabel, stepText, bgColor }) => {
+    return (
+        <Box
+            sx={{
+                backgroundColor: bgColor,
+                borderRadius: "100%",
+                aspectRatio: "1/1",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                position: "relative",
+                zIndex: "10",
+            }}
+        >
+            <Typography variant="h4" component="p">
+                {stepLabel}
+            </Typography>
+            <Typography
+                variant="h4"
+                component="p"
+                sx={{
+                    position: "absolute",
+                    bottom: "-3rem",
+                    whiteSpace: "nowrap",
+                }}
+            >
+                {stepText}
+            </Typography>
+        </Box>
+    );
+};
 
 const Progress = () => {
     const { orderId } = useParams();
-    const bgColor = orderId ? "bg-bg_brown-300" : "bg-card-100";
+
+    const theme = useTheme();
+    const bgColor = orderId
+        ? theme.palette.primary.dark
+        : theme.palette.card.main;
 
     return (
-        <div className="grid grid-cols-[4rem_1fr_4rem_1fr_4rem] items-center">
-            <div className="relative z-10 flex aspect-square h-full items-center justify-center rounded-full bg-bg_brown-300">
-                <p className="text-3xl text-bg_brown-400">1</p>
-                <div className="absolute -bottom-12 whitespace-nowrap text-3xl">
-                    商品資料確認
-                </div>
-            </div>
+        <Box
+            aria-label="Progress component"
+            sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2,4rem 1fr) 4rem",
+                alignSelf: "start",
+                alignItems: "center",
+                gridColumn: "1/-1",
+                paddingX: "3rem",
+                "& .MuiTypography-root": {
+                    fontSize: "2rem",
+                },
+            }}
+        >
+            <ProgressStep
+                stepLabel="1"
+                stepText="商品資料確認"
+                bgColor="primary.dark"
+            />
+
+            {/* divide */}
             <div
-                className={`h-5 w-[110%] -translate-x-1 items-center ${bgColor}`}
+                style={{ backgroundColor: bgColor }}
+                className={`h-5 w-[105%] -translate-x-1 items-center`}
             ></div>
+
+            <ProgressStep stepLabel="2" stepText="付款" bgColor={bgColor} />
+
+            {/* divide */}
             <div
-                className={`relative z-10 flex aspect-square h-full items-center justify-center rounded-full ${bgColor}`}
-            >
-                <p className="text-3xl text-bg_brown-400">2</p>
-                <div className="absolute -bottom-12 whitespace-nowrap text-3xl">
-                    付款
-                </div>
-            </div>
-            <div
-                className={`h-5 w-[110%] -translate-x-1 items-center ${bgColor}`}
+                style={{ backgroundColor: bgColor }}
+                className={`h-5 w-[105%] -translate-x-1 items-center`}
             ></div>
-            <div
-                className={`relative z-10 flex aspect-square h-full items-center justify-center rounded-full ${bgColor}`}
-            >
-                <p className="text-3xl text-bg_brown-400">3</p>
-                <div className="absolute -bottom-12 whitespace-nowrap text-3xl">
-                    完成訂單
-                </div>
-            </div>
-        </div>
+
+            <ProgressStep stepLabel="3" stepText="完成訂單" bgColor={bgColor} />
+        </Box>
     );
 };
 

@@ -1,16 +1,25 @@
 import { Outlet } from "react-router-dom";
 import Progress from "../features/Order/Progress";
+import { Box } from "@mui/material";
 
 const Order = () => {
     return (
-        <div className="col-start-2 col-end-9 grid grid-cols-subgrid grid-rows-[auto_1fr] py-32">
-            <div className="col-start-2 col-end-7 mb-32">
-                <Progress />
-            </div>
-            <div className="col-span-full grid grid-cols-subgrid gap-10">
-                <Outlet />
-            </div>
-        </div>
+        <Box
+            aria-label="Order Layout"
+            sx={{
+                gridColumn: "2/9",
+                display: "grid",
+                gridTemplateColumns: "repeat(5,1fr)",
+                paddingTop: "12vh",
+                paddingBottom: "5vh",
+                rowGap: "7rem",
+                columnGap: "1rem",
+            }}
+        >
+            <Progress />
+
+            <Outlet />
+        </Box>
     );
 };
 

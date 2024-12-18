@@ -1,13 +1,21 @@
-import BreakLine from "../../components/BreakLine";
+import { Box, Divider, Typography } from "@mui/material";
 import OrderInfomationForm from "./OrderInfomationForm";
 
 const OrderInfomationSection = ({ setNeedDeliver }) => {
     return (
-        <div className="col-start-1 col-end-5 self-start rounded-xl bg-bg_brown-100 p-10">
-            <h4 className="mb-8 text-4xl">訂單資訊</h4>
-            <BreakLine />
+        <Box
+            sx={{
+                gridColumn: "1/4",
+                backgroundColor: "primary.main",
+                padding: "2rem",
+            }}
+        >
+            <Typography component={"div"} sx={{ fontSize: "2rem" }}>
+                訂單資訊
+            </Typography>
+            <Divider />
             <OrderInfomationForm setNeedDeliver={setNeedDeliver} />
-        </div>
+        </Box>
     );
 };
 

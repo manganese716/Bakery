@@ -24,6 +24,18 @@ html {
     -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
+@media (max-width: 768px) {
+    html {
+        font-size: 56.25%;
+    }
+}
+
+@media (max-width: 500px) {
+    html {
+        font-size: 50%;
+    }
+}
+
 .no-scrollbar {
     overflow-y: scroll;
     scrollbar-width: none; /* Firefox */

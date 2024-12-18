@@ -1,25 +1,32 @@
 import { useForm } from "react-hook-form";
-import TextInput from "../../components/TextInput";
-import { changePasswordAPI, getUserAPI } from "../../SupabaseAPI";
+// import TextInput from "../../components/TextInput";
+import { changeProfileAPI, getUserAPI } from "../../SupabaseAPI";
 import { useEffect, useState } from "react";
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, Box, Snackbar } from "@mui/material";
+import ReactFormInput from "../../components/ReactFormInput";
+import ReactFormButton from "../../components/ReactFormButton";
+import { useMutation } from "@tanstack/react-query";
 
 const Info = () => {
     const {
-        register,
-        formState: { errors },
+        formState: { isValid },
         handleSubmit,
         reset,
+        control,
     } = useForm({
         mode: "onBlur",
     });
 
-    const onSubmit = (formData) => {
-        changePasswordAPI({ formData });
-        setToastOpen(true);
-    };
-
     const [toastOpen, setToastOpen] = useState(false);
+
+    const { mutate, isPending, isSuccess } = useMutation({
+        mutationFn: async (data) => {
+            await changeProfileAPI({ formData: data });
+        },
+        onSettled: () => {
+            setToastOpen(true);
+        },
+    });
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -29,10 +36,10 @@ const Info = () => {
                 } = await getUserAPI();
 
                 reset({
-                    InfoName: name || "",
-                    InfoPhone: phone || "",
-                    InfoEmail: email || "",
-                    InfoAddress: address || "",
+                    name: name || "",
+                    phone: phone || "",
+                    email: email || "",
+                    address: address || "",
                 });
             } catch (error) {
                 console.error("Failed to fetch user metaData:", error);
@@ -44,68 +51,104 @@ const Info = () => {
 
     return (
         <>
-            <form
-                className="col-start-3 col-end-9 grid grid-cols-2 gap-10 self-start rounded-2xl bg-bg_brown-100 p-12 shadow-[4px_4px_2px] shadow-black/20"
-                onSubmit={handleSubmit(onSubmit)}
+            <Box
+                component={"form"}
+                sx={{
+                    backgroundColor: "primary.main",
+                    gridColumn: { sm: "2/-1", xs: "1/-1" },
+                    padding: "3rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    rowGap: "3rem",
+                }}
+                onSubmit={handleSubmit((formData) => mutate(formData))}
             >
-                <TextInput
-                    label="姓名"
-                    id="InfoName"
-                    register={register}
-                    errors={errors}
+                <ReactFormInput
+                    name={"name"}
+                    control={control}
+                    label={"姓名"}
+                    rules={{
+                        required: "電子信箱是必填",
+                    }}
                 />
-                <TextInput
-                    label="電話"
-                    id="InfoPhone"
-                    register={register}
-                    errors={errors}
+                <ReactFormInput
+                    name={"phone"}
+                    control={control}
+                    label={"電話"}
                     disable={true}
                 />
-                <div className="col-span-2">
-                    <TextInput
-                        label="電子信箱"
-                        id="InfoEmail"
-                        register={register}
-                        errors={errors}
-                        disable={true}
-                    />
-                </div>
-                <div className="col-span-2">
-                    <TextInput
-                        label="地址"
-                        id="InfoAddress"
-                        register={register}
-                        errors={errors}
-                    />
-                </div>
-                <TextInput
-                    label="更換密碼"
-                    id="InfoPassword"
-                    register={register}
-                    errors={errors}
+                <ReactFormInput
+                    name={"email"}
+                    control={control}
+                    label={"電子信箱"}
+                    disable={true}
                 />
-                <TextInput
-                    label="重複輸入密碼"
-                    id="InfoRepeatPassword"
-                    register={register}
-                    errors={errors}
+                <ReactFormInput
+                    name={"address"}
+                    control={control}
+                    label={"地址"}
                 />
-                <button className="col-start-2 col-end-3 flex w-auto justify-self-end rounded-2xl bg-btn-100 px-6 py-3 text-3xl text-font-100">
-                    儲存變更
-                </button>
-            </form>
+                <ReactFormInput
+                    name={"password"}
+                    control={control}
+                    label={"修改密碼"}
+                    type="password"
+                    rules={{
+                        validate: (value) => {
+                            if (value) {
+                                if (value.length < 8) {
+                                    return "密碼最少要8個字元";
+                                }
+                            }
+                            return true;
+                        },
+                    }}
+                />
+                <ReactFormInput
+                    name={"repeatPassword"}
+                    control={control}
+                    label={"重複輸入密碼"}
+                    type="password"
+                    rules={{
+                        validate: (value, formValue) => {
+                            return value === formValue.password || "密碼不相等";
+                        },
+                    }}
+                />
+                <Box
+                    sx={{
+                        marginTop: "2rem",
+                        display: "flex",
+                        justifyContent: "flex-end",
+                    }}
+                >
+                    <ReactFormButton
+                        isValid={isValid}
+                        isPending={isPending}
+                        text="更改資料"
+                    />
+                </Box>
+            </Box>
+
             <Snackbar
                 open={toastOpen}
                 autoHideDuration={3000}
                 onClose={() => setToastOpen(false)}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                sx={{
+                    "& .MuiPaper-root": {
+                        display: "felx",
+                        alignItems: "center",
+                    },
+                }}
             >
                 <Alert
                     onClose={() => setToastOpen(false)}
-                    severity="success"
+                    severity={isSuccess ? "success" : "error"}
                     variant="filled"
+                    sx={{ fontSize: "2rem" }}
                 >
-                    Profile變更成功！
+                    {isSuccess ? "Profile變更成功！" : "更改個人資訊時發生錯誤"}
                 </Alert>
             </Snackbar>
         </>

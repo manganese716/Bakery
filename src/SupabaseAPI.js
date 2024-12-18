@@ -42,26 +42,27 @@ export const getSessionAPI = async () => {
     return session;
 };
 
-export const changePasswordAPI = async ({ formData }) => {
-    const { InfoName, InfoPhone, InfoEmail, InfoAddress, InfoPassword } =
-        formData;
+export const changeProfileAPI = async ({ formData }) => {
+    const { name, password, address } = formData;
 
     const updateData = {
         data: {
-            name: InfoName,
-            phone: InfoPhone,
-            email: InfoEmail,
-            address: InfoAddress,
+            name,
+            password,
+            address,
         },
     };
 
-    if (InfoPassword) {
-        updateData.password = InfoPassword;
+    // 有要改密碼
+    if (password) {
+        updateData.password = password;
     }
 
     const { error } = await supabase.auth.updateUser(updateData);
 
-    if (error) throw error;
+    if (error) throw "更改個人資訊時發生錯誤";
+
+    return;
 };
 
 export const logOutAPI = async () => {
@@ -105,6 +106,8 @@ export const sendOrderAPI = async ({
     shipping_address = "",
     shipping_method,
 }) => {
+    console.log(shipping_method);
+
     const { data, error } = await supabase
         .from("order")
         .insert([

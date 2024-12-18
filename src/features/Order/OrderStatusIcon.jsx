@@ -10,7 +10,7 @@ const OrderStatusIcon = ({ orderStatus }) => {
 
     return (
         <div
-            className={`flex justify-center self-start rounded-full px-12 py-2 text-font-100 ${bg_color[orderStatus]}`}
+            className={`text-md flex justify-center self-start rounded-full px-2 py-2 text-font-100 ${bg_color[orderStatus]}`}
         >
             {orderStatusText[orderStatus]}
         </div>

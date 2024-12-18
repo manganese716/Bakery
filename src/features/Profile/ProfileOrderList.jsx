@@ -5,8 +5,19 @@ import {
     fetchRecentOrderByUserId,
     getUserAPI,
 } from "../../SupabaseAPI";
-import { BarLoader } from "react-spinners";
 import OrderStatusIcon from "../Order/OrderStatusIcon";
+import {
+    Box,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+} from "@mui/material";
+import { BeatLoader } from "react-spinners";
 
 const ProfileOrderList = () => {
     const { data: orderList, isLoading } = useQuery({
@@ -40,68 +51,110 @@ const ProfileOrderList = () => {
     });
 
     return (
-        <div className="no-scrollbar col-start-3 col-end-9 grid max-h-[55.5rem] grid-cols-[10rem_1fr_13rem_1fr_8rem] grid-rows-[auto_1fr] overflow-scroll rounded-2xl bg-bg_brown-100 px-12 py-8 shadow-[4px_4px_2px] shadow-black/20">
-            <div className="col-span-full grid grid-cols-subgrid self-start border-b border-black py-6 text-3xl">
-                <p>訂單編號</p>
-                <p className="justify-self-center">訂單成立日期</p>
-                <p className="justify-self-center">狀態</p>
-                <p className="justify-self-center">品項</p>
-                <p className="justify-self-end">金額</p>
-            </div>
-            {isLoading ? (
-                <div className="col-span-full flex items-start justify-center py-20">
-                    <BarLoader />
-                </div>
-            ) : (
-                orderList.map((order) => {
-                    const { id, created_at, status, products, total_amount } =
-                        order;
+        <TableContainer
+            component={Paper}
+            aria-label="tableContainer"
+            sx={{
+                gridColumn: { sm: "2/-1", xs: "1/-1" },
+                backgroundColor: "primary.main",
+                padding: "2rem",
+            }}
+        >
+            <Table
+                sx={{
+                    "& .MuiTableCell-root": {
+                        fontSize: "1.8rem",
+                        paddingX: "0",
+                        textAlign: "center",
+                    },
+                    minWidth: { sm: "540px", xs: "460px" },
+                }}
+            >
+                <TableHead>
+                    <TableRow>
+                        <TableCell>訂單編號</TableCell>
+                        <TableCell>訂單成立日期</TableCell>
+                        <TableCell sx={{ width: "18%" }}>狀態</TableCell>
+                        <TableCell sx={{ width: "20%" }}>品項</TableCell>
+                        <TableCell>金額</TableCell>
+                    </TableRow>
+                </TableHead>
+                {isLoading ? (
+                    <TableRow>
+                        <TableCell colSpan={5} sx={{ border: "0" }}>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
 
-                    const formattedDate = new Date(created_at)
-                        .toLocaleDateString("zh-TW", {
-                            year: "numeric",
-                            month: "2-digit",
-                            day: "2-digit",
-                        })
-                        .replace(/\//g, "/");
+                                    height: "100px", // 根據需要調整高度
+                                }}
+                            >
+                                <BeatLoader color="#8B5E34" />
+                            </Box>
+                        </TableCell>
+                    </TableRow>
+                ) : (
+                    <TableBody>
+                        {orderList?.map((order) => {
+                            const {
+                                id,
+                                created_at,
+                                status,
+                                products,
+                                total_amount,
+                            } = order;
 
-                    return (
-                        <div
-                            key={`orderList${id}`}
-                            className="col-span-full grid grid-cols-subgrid self-start border-b border-black py-6 pl-8 text-3xl last:border-none"
-                        >
-                            <p>{id}</p>
-                            <p className="flex justify-center">
-                                {formattedDate}
-                            </p>
-                            <OrderStatusIcon orderStatus={status} />
-                            <div>
-                                {products.slice(0, 2).map((product) => {
-                                    const { commodity_id, name, quantity } =
-                                        product;
-                                    return (
-                                        <div
-                                            key={`orderList${id}Items${commodity_id}`}
-                                            className="flex justify-center"
-                                        >
-                                            {name} X {quantity}
-                                        </div>
-                                    );
-                                })}
-                                {products.length > 2 && (
-                                    <div className="flex justify-center">
-                                        ...
-                                    </div>
-                                )}
-                            </div>
-                            <p className="flex justify-end">
-                                NT${total_amount}
-                            </p>
-                        </div>
-                    );
-                })
-            )}
-        </div>
+                            const formattedDate = new Date(created_at)
+                                .toLocaleDateString("zh-TW", {
+                                    year: "numeric",
+                                    month: "2-digit",
+                                    day: "2-digit",
+                                })
+                                .replace(/\//g, "/");
+
+                            return (
+                                <TableRow key={`orderList${id}`}>
+                                    <TableCell>{id}</TableCell>
+                                    <TableCell>{formattedDate}</TableCell>
+                                    <TableCell>
+                                        <OrderStatusIcon orderStatus={status} />
+                                    </TableCell>
+                                    <TableCell>
+                                        {products.slice(0, 2).map((product) => {
+                                            const {
+                                                commodity_id,
+                                                name,
+                                                quantity,
+                                            } = product;
+                                            return (
+                                                <Typography
+                                                    key={`orderList${id}Items${commodity_id}`}
+                                                    // className="flex justify-center"
+                                                    sx={{ fontSize: "1.5rem" }}
+                                                >
+                                                    {name} X {quantity}
+                                                </Typography>
+                                            );
+                                        })}
+                                        {products.length > 2 && (
+                                            <Typography
+                                                // className="flex justify-center"
+                                                sx={{ fontSize: "1.5rem" }}
+                                            >
+                                                ...
+                                            </Typography>
+                                        )}
+                                    </TableCell>
+                                    <TableCell>NT${total_amount}</TableCell>
+                                </TableRow>
+                            );
+                        })}
+                    </TableBody>
+                )}
+            </Table>
+        </TableContainer>
     );
 };
 

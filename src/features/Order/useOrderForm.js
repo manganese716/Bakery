@@ -1,32 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { getUserAPI } from "../../SupabaseAPI";
 
-const useOrderForm = ({
-    // defaultValues,
-    radioOptions,
-    payMethod,
-    setNeedDeliver,
-}) => {
-    const [defaultValues, setDefaultValues] = useState({
-        orderFormPhone: "",
-        orderFormEmail: "",
-        orderFormName: "",
-        orderFormDeliveryMethod: radioOptions[0],
-        orderFormPayMethod: payMethod[0],
-    });
-
+const useOrderForm = ({ setNeedDeliver }) => {
     const {
-        register,
         watch,
         formState: { isValid, errors },
         handleSubmit,
         unregister,
         clearErrors,
         reset,
+        control,
     } = useForm({
         mode: "onBlur",
-        defaultValues,
     });
 
     // 獲取使用者 metaData 並設定預設值
@@ -34,20 +20,13 @@ const useOrderForm = ({
         const fetchUserMetaData = async () => {
             try {
                 const { user_metadata } = await getUserAPI();
-                // console.log(data);
-                setDefaultValues({
-                    orderFormPhone: user_metadata.phone || "",
-                    orderFormEmail: user_metadata.email || "",
-                    orderFormName: user_metadata.name || "",
-                    orderFormDeliveryMethod: radioOptions[0],
-                    orderFormPayMethod: payMethod[0],
-                });
+                // console.log(radioOptions);
                 reset({
-                    orderFormPhone: user_metadata.phone || "",
-                    orderFormEmail: user_metadata.email || "",
-                    orderFormName: user_metadata.name || "",
-                    orderFormDeliveryMethod: radioOptions[0],
-                    orderFormPayMethod: payMethod[0],
+                    phone: user_metadata.phone || "",
+                    email: user_metadata.email || "",
+                    name: user_metadata.name || "",
+                    deliveryMethod: "0",
+                    payMethod: "0",
                 });
             } catch (error) {
                 console.error("Failed to fetch user metaData:", error);
@@ -55,20 +34,20 @@ const useOrderForm = ({
         };
 
         fetchUserMetaData();
-    }, [radioOptions, payMethod, reset]);
+    }, [reset]);
 
     //監測選項變化，假設需要運費，在cartSection加NT50
-    const deliveryMethod = watch("orderFormDeliveryMethod");
+    const deliveryMethod = watch("deliveryMethod");
     useEffect(() => {
-        if (deliveryMethod === radioOptions[0]) {
+        if (deliveryMethod === "0") {
             setNeedDeliver(true);
         } else {
             setNeedDeliver(false);
         }
-    }, [deliveryMethod, setNeedDeliver, radioOptions]);
+    }, [deliveryMethod, setNeedDeliver]);
 
     return {
-        register,
+        control,
         unregister,
         clearErrors,
         handleSubmit,

@@ -15,11 +15,15 @@ const ProductCards = ({ commodities }) => {
         <Grid2
             sx={{
                 display: "grid",
-                gridColumn: "2/7",
-                columnGap: "2rem",
+                gridColumn: { md: "2/7", xs: "1/-1" },
+                columnGap: { sm: "2rem", xs: "1rem" },
                 rowGap: "3rem",
                 justifyContent: "start",
-                gridTemplateColumns: "repeat(auto-fit,25.5rem)",
+                alignSelf: "start",
+                gridTemplateColumns: {
+                    sm: "repeat(3,auto)",
+                    xs: "repeat(2,auto)",
+                },
             }}
         >
             {commodities?.slice(0, 6).map((commodity) => (
@@ -59,15 +63,15 @@ const ProductCard = ({ product }) => {
                 backgroundColor: "card.main",
                 alignSelf: "start",
                 justifySelf: "start",
-                "& .MuiCardContent-root": {
-                    paddingBottom: "1.6rem",
+                "& .MuiCardContent-root:last-child": {
+                    paddingBottom: { sm: "1.6rem", xs: "0.8rem" },
                 },
             }}
         >
             <Box
                 sx={{
-                    padding: "1.6rem",
-                    height: "25.4rem",
+                    padding: { sm: "1.4rem", xs: "0.6rem" },
+                    maxHeight: "30rem",
                     aspectRatio: "1/1",
                 }}
             >
@@ -79,7 +83,6 @@ const ProductCard = ({ product }) => {
                         height: "100%",
                         width: "100%",
                         objectFit: "cover",
-
                         borderRadius: "0.6rem",
                     }}
                 />
@@ -89,7 +92,6 @@ const ProductCard = ({ product }) => {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    padding: "0.6rem",
                     paddingTop: "0",
                 }}
             >

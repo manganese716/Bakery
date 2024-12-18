@@ -39,7 +39,7 @@ const OrderDetail = () => {
         );
 
     return (
-        <div className="col-start-2 col-end-7 flex flex-col gap-y-10 rounded-2xl bg-bg_brown-100 p-10 text-4xl text-bg_brown-400 shadow-[4px_4px_4px] shadow-black/20">
+        <div className="col-start-1 col-end-7 flex flex-col gap-y-10 rounded-2xl bg-bg_brown-100 p-10 text-4xl text-bg_brown-400 shadow-[4px_4px_4px] shadow-black/20">
             <h2 className="text-4xl">訂單明細</h2>
             <div className="flex gap-x-8">
                 <div className="flex items-center">

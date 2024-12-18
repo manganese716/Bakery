@@ -30,14 +30,16 @@ const cardContentStyles = {
 
 const bannerStyles = {
     gridColumn: "1/-1",
-    height: "calc(100vh - 6rem)",
-    paddingLeft: "6vw",
+    height: { md: "calc(100vh)", xs: "80vw" },
+    minHeight: "500px",
+    paddingX: "6vw",
     display: "flex",
     justifyContent: "center",
     flexDirection: "column",
     color: "font.secondary",
     backgroundSize: "cover",
-    backgroundImage: "url('/img/banner.jpg')",
+    backgroundImage:
+        "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('/img/banner.jpg')",
     backgroundRepeat: "no-repeat",
 };
 
@@ -88,14 +90,34 @@ export const Home = () => {
         <>
             {/* banner */}
             <Box sx={bannerStyles}>
-                <Typography
-                    variant="h2"
-                    component={"div"}
-                    sx={{ transform: "translate(0,-15rem)" }}
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        justifyContent: { sm: "start", xs: "center" },
+                    }}
                 >
-                    新鮮出爐的香氣，溫暖你的每一天 <br />
-                    用心烘焙，只為你停下的那一口
-                </Typography>
+                    <Typography variant="h2" component="div">
+                        新鮮出爐的香氣,
+                    </Typography>
+                    <Typography variant="h2" component="div">
+                        溫暖你的每一天
+                    </Typography>
+                </Box>
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        justifyContent: { sm: "start", xs: "center" },
+                    }}
+                >
+                    <Typography variant="h2" component="div">
+                        用心烘焙,
+                    </Typography>
+                    <Typography variant="h2" component="div">
+                        只為你的那一口
+                    </Typography>
+                </Box>
 
                 <Typography
                     variant="h4"
@@ -103,7 +125,8 @@ export const Home = () => {
                     sx={{
                         textDecoration: "underline",
                         cursor: "pointer",
-                        alignSelf: "start",
+                        alignSelf: { sm: "start", xs: "center" },
+                        transform: "translateY(5rem)",
                     }}
                     onClick={() => navigate("/product")}
                 >
@@ -144,8 +167,11 @@ export const Home = () => {
                     sx={{
                         gridColumn: "1/-1",
                         display: "grid",
-                        gridTemplateColumns: "repeat(2,1fr)",
-                        columnGap: "2rem",
+                        gridTemplateColumns: {
+                            sm: "repeat(2,1fr)",
+                            xs: "1fr",
+                        },
+                        gap: "2rem",
                     }}
                 >
                     <ActionCard

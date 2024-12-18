@@ -43,7 +43,7 @@ const Product = () => {
     }, []);
 
     return (
-        <div className="col-start-2 col-end-9 grid min-h-[78rem] grid-cols-subgrid grid-rows-[6rem_1fr] gap-16 py-32">
+        <div className="col-start-2 col-end-9 grid min-h-[78rem] grid-cols-subgrid grid-rows-[auto_1fr] gap-y-14 py-32">
             <SortBtns />
             {isLoading ? (
                 <div className="col-start-2 col-end-7 flex justify-center">

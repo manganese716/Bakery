@@ -10,6 +10,9 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { resetCart } from "../Cart/CartSlice";
 
+const transferPayMethod = ["LinePay", "貨到付款"];
+const transferDeliveryMethod = ["宅配", "到店取貨"];
+
 const useSubmitOrder = ({ cartDatas }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
@@ -18,14 +21,19 @@ const useSubmitOrder = ({ cartDatas }) => {
 
     const onSubmit = async (data) => {
         const {
-            orderFormAddress: shipping_address,
-            orderFormPayMethod,
-            orderFormDeliveryMethod,
+            address: shipping_address,
+            payMethod,
+            deliveryMethod,
+            // 原本沒有的
+            // name,
+            // phone,
+            // email,
         } = data;
+
         try {
             setIsSubmitting(true);
             //step 1.創建訂單
-            const shipmentFee = orderFormDeliveryMethod === "宅配" ? 50 : 0;
+            const shipmentFee = deliveryMethod === "0" ? 50 : 0;
             const product_amount = cartDatas.reduce((acc, cur) => {
                 return (acc += cur.price * cur.quantity);
             }, 0);
@@ -36,8 +44,9 @@ const useSubmitOrder = ({ cartDatas }) => {
 
             const orderData = await sendOrderAPI({
                 user_id,
-                payment_method: orderFormPayMethod || "貨到付款",
-                shipping_method: orderFormDeliveryMethod === "宅配" ? 1 : 0,
+                payment_method: transferPayMethod[parseInt(payMethod)],
+                shipping_method:
+                    transferDeliveryMethod[parseInt(deliveryMethod)],
                 total_amount,
                 shipping_address,
             });
@@ -56,7 +65,7 @@ const useSubmitOrder = ({ cartDatas }) => {
             await insertOrderItemsAPI({ orderItems });
 
             //step 3.付款方式(只有Line Pay才要先付款)
-            if (orderFormPayMethod === "LinePay") {
+            if (transferPayMethod[payMethod] === "LinePay") {
                 //創建LinePay Body
                 const products = cartDatas.map((cartData) => {
                     const { id, productName, quantity, price } = cartData;

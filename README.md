@@ -10,3 +10,6 @@ Currently, two official plugins are available:
 可以刪除
 BreakLine
 BTN
+
+Bug
+在profile order 開啟BarMenu按下個人資訊，頁面會變換但是Tabs沒有變

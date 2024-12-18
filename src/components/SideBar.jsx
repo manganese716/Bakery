@@ -1,7 +1,8 @@
 import { useSelector } from "react-redux";
 import SideBarItem from "./SideBarItem";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Drawer, Typography } from "@mui/material";
+import { Box, Button, Drawer, IconButton, Typography } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const SideBar = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
@@ -21,6 +22,7 @@ const SideBar = ({ isOpen, onClose }) => {
                     backgroundColor: "primary.main",
                     height: "100%",
                     padding: "1rem 2rem",
+                    position: "relative",
                 }}
             >
                 <Typography
@@ -76,6 +78,12 @@ const SideBar = ({ isOpen, onClose }) => {
                         購物車是空的
                     </Typography>
                 )}
+                <IconButton
+                    sx={{ position: "absolute", right: "2rem", top: "2.5rem" }}
+                    onClick={onClose}
+                >
+                    <CloseIcon sx={{ fontSize: "3rem" }} />
+                </IconButton>
             </Box>
         </Drawer>
     );

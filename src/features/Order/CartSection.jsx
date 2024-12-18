@@ -1,8 +1,17 @@
-import { FaArrowLeft } from "react-icons/fa6";
-import BreakLine from "../../components/BreakLine";
 import CartPreviews from "./CartPreviews";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Box, Button, Divider, Typography } from "@mui/material";
+import ArrowBackIosNewTwoToneIcon from "@mui/icons-material/ArrowBackIosNewTwoTone";
+const totalStyle = {
+    display: "grid",
+    gridTemplateColumns: "subgrid",
+    gridColumn: "1/-1",
+    "& .MuiTypography-root": {
+        fontSize: "2rem",
+    },
+};
+
 const CartSection = ({ needDeliver }) => {
     const cartItems = useSelector((state) => state.cart);
     const navigate = useNavigate();
@@ -15,38 +24,77 @@ const CartSection = ({ needDeliver }) => {
     const deliveryFee = needDeliver ? 50 : 0;
 
     return (
-        <div className="col-start-5 col-end-8 flex flex-col rounded-xl bg-bg_brown-100 p-10 text-bg_brown-400">
-            <div className="mb-8 flex items-center justify-between">
-                <h4 className="text-4xl">購物車</h4>
-                <button
-                    className="flex items-center gap-1 rounded-xl px-3 py-1 text-3xl transition-colors hover:bg-bg_brown-200"
+        <Box
+            sx={{
+                gridColumn: "4/-1",
+                backgroundColor: "primary.main",
+                padding: "2rem",
+            }}
+        >
+            <Box
+                sx={{
+                    display: "flex",
+                    alignItems: "start",
+                    justifyContent: "space-between",
+                }}
+            >
+                <Typography sx={{ fontSize: "2rem" }}>購物車</Typography>
+                <Button
+                    sx={{
+                        color: "primary.dark",
+                        paddingY: "0",
+                    }}
                     onClick={() => navigate("/product")}
                 >
-                    <FaArrowLeft className="translate-y-1" />
-                    <p>回到商場</p>
-                </button>
-            </div>
-            <BreakLine />
+                    <ArrowBackIosNewTwoToneIcon
+                        sx={{
+                            fontSize: "2rem",
+                            transform: "translateY(0.2rem)",
+                        }}
+                    />
+                    <Typography sx={{ fontSize: "2rem" }}>回到商場</Typography>
+                </Button>
+            </Box>
+            <Divider />
             <CartPreviews cartItems={cartItems} />
-            <BreakLine />
-            <div className="grid grid-cols-[1fr_5rem_10rem] gap-y-8 py-8 text-4xl">
-                <div className="col-span-3 grid grid-cols-subgrid">
-                    <p>小計</p>
-                    <p>NT$</p>
-                    <p className="flex justify-end">{subtotal}</p>
-                </div>
-                <div className="col-span-3 grid grid-cols-subgrid border-b border-bg_brown-400/30 pb-8">
-                    <p>運費</p>
-                    <p>NT$</p>
-                    <p className="flex justify-end">{deliveryFee}</p>
-                </div>
-                <div className="col-span-3 grid grid-cols-subgrid">
-                    <p>總計</p>
-                    <p>NT$</p>
-                    <p className="flex justify-end">{subtotal + deliveryFee}</p>
-                </div>
-            </div>
-        </div>
+            <Divider />
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 5rem 10rem",
+                    paddingY: "1rem",
+                    rowGap: "1rem",
+                }}
+            >
+                <Box sx={totalStyle}>
+                    <Typography>小計</Typography>
+                    <Typography>NT$</Typography>
+                    <Typography sx={{ justifySelf: "end" }}>
+                        {subtotal}
+                    </Typography>
+                </Box>
+
+                <Box sx={totalStyle}>
+                    <Typography>運費</Typography>
+                    <Typography>NT$</Typography>
+                    <Typography sx={{ justifySelf: "end" }}>
+                        {deliveryFee}
+                    </Typography>
+                </Box>
+
+                <Box sx={{ gridColumn: "1/-1" }}>
+                    <Divider />
+                </Box>
+
+                <Box sx={totalStyle}>
+                    <Typography>總計</Typography>
+                    <Typography>NT$</Typography>
+                    <Typography sx={{ justifySelf: "end" }}>
+                        {subtotal + deliveryFee}
+                    </Typography>
+                </Box>
+            </Box>
+        </Box>
     );
 };
 
